@@ -5,15 +5,23 @@ plugins {
 }
 
 group = 'com.litsynp'
-version = '0.0.1-SNAPSHOT'
+version = '0.1.0'
 sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
 }
 
+final isMacOS = System.getProperty('os.name').startsWith('Mac OS X')
+final architecture = System.getProperty('os.arch').toLowerCase()
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    if (isMacOS && architecture == 'aarch64') {
+        runtimeOnly('io.netty:netty-resolver-dns-native-macos:4.1.72.Final:osx-aarch_64')
+    }
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
 }
